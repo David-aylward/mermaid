@@ -68,6 +68,17 @@
             border-radius: 6px;
             background: #fff;
         }
+        #responses {
+            margin-top: 10px;
+        }
+        #responses pre {
+            white-space: pre-wrap;
+            background: #fafafa;
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
         #error {
             color: #b30000;
             margin-top: 10px;
@@ -90,6 +101,7 @@
     </div>
     <div id="error"></div>
     <div id="graphContainer"></div>
+    <div id="responses"></div>
 </div>
     <script>
         // Configure Mermaid without automatically parsing diagrams on page load
@@ -187,6 +199,14 @@
 
         document.getElementById('ollamaUrl').addEventListener('change', fetchModels);
 
+        function appendResponse(text) {
+            if (!text) return;
+            const responses = document.getElementById('responses');
+            const pre = document.createElement('pre');
+            pre.textContent = text;
+            responses.appendChild(pre);
+        }
+
         // Generate Mermaid code using a local LLM via Ollama
         async function generateWithAI() {
             const instruction = prompt('Describe the diagram you want:');
@@ -205,8 +225,25 @@
                 });
                 const data = await resp.json();
                 if (data && data.response) {
-                    document.getElementById('code').value = data.response.trim();
-                    renderGraph();
+                    let text = data.response.trim();
+                    let code = '';
+                    let match = text.match(/```mermaid\n([\s\S]*?)```/i);
+                    if (match) {
+                        code = match[1].trim();
+                        text = text.replace(match[0], '').trim();
+                    } else {
+                        match = text.match(/<mermaid>([\s\S]*?)<\/mermaid>/i);
+                        if (match) {
+                            code = match[1].trim();
+                            text = text.replace(match[0], '').trim();
+                        }
+                    }
+                    text = text.replace(/<\/?.*?think>/gi, '').trim();
+                    if (code) {
+                        document.getElementById('code').value = code;
+                        renderGraph();
+                    }
+                    appendResponse(text);
                 }
             } catch (err) {
                 alert('Failed to contact Ollama: ' + err.message);

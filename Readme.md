@@ -36,3 +36,4 @@ ollama serve
 With the server running, use the **AI Generate** button in the editor. The text field labeled **Ollama API URL** lets you specify the API endpoint (default `http://localhost:11434`).
 The list of models is fetched automatically from the server and shown in a drop-down so you can pick which one to use for generation.
 Enter a prompt describing your diagram and the selected model will return Mermaid code that is placed in the editor automatically.
+Any extra text from the model is shown beneath the diagram in the **Response History** area so you can review previous explanations.
