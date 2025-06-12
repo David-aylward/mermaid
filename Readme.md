@@ -1,7 +1,7 @@
 # Mermaid Graph Editor
 
 
-This simple app allows you to edit and render [Mermaid](https://mermaid-js.github.io/) diagrams directly in the browser. You can download the rendered graph as an SVG image and store frequently used snippets as templates using your browser's local storage. The interface is styled with basic CSS for a clean, modern look. Rendering now uses `mermaid.render` for better reliability when re-rendering after fixing errors.
+This simple app allows you to edit and render [Mermaid](https://mermaid-js.github.io/) diagrams directly in the browser. You can download the rendered graph as an SVG image and store frequently used snippets as templates using your browser's local storage. The interface is now styled with a vibrant gradient theme for a playful, modern feel. Rendering uses `mermaid.render` for better reliability when re-rendering after fixing errors.
 
 
 ## Usage
