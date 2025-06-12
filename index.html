@@ -4,26 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mermaid Graph Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             margin: 0;
             padding: 20px;
+            color: #333;
         }
         .container {
             max-width: 960px;
             margin: 0 auto;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.85);
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
         textarea {
             width: 100%;
             height: 240px;
             font-family: monospace;
             margin-bottom: 10px;
+            border-radius: 6px;
+            padding: 10px;
+            background: #fafafa;
+            border: 1px solid #ccc;
         }
         .controls {
             display: flex;
@@ -31,11 +41,32 @@
             flex-wrap: wrap;
             margin-bottom: 10px;
         }
+        .controls button {
+            background: linear-gradient(135deg, #ff6b6b, #f06595);
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .controls select {
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 6px;
+        }
         #graphContainer {
             border: 1px solid #ccc;
             padding: 10px;
             min-height: 120px;
             overflow: auto;
+            border-radius: 6px;
+            background: #fff;
         }
         #error {
             color: #b30000;
