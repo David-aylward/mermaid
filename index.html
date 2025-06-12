@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Graph Editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 200px; }
+        #graphContainer { border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Mermaid Graph Editor</h1>
+    <textarea id="code" placeholder="Enter mermaid code here"></textarea>
+    <div>
+        <button id="renderBtn">Render</button>
+        <button id="downloadBtn">Download Image</button>
+        <button id="saveTemplateBtn">Save Template</button>
+        <select id="templates"></select>
+        <button id="loadTemplateBtn">Load Template</button>
+    </div>
+    <div id="graphContainer"></div>
+    <script>
+        mermaid.initialize({startOnLoad:false});
+
+        function renderGraph() {
+            const code = document.getElementById('code').value;
+            const container = document.getElementById('graphContainer');
+            container.innerHTML = `<div class="mermaid">${code}</div>`;
+            mermaid.init(undefined, container);
+        }
+
+        document.getElementById('renderBtn').addEventListener('click', renderGraph);
+
+        // Template handling
+        function updateTemplateList() {
+            const select = document.getElementById('templates');
+            select.innerHTML = '';
+            const keys = Object.keys(localStorage).filter(k => k.startsWith('template_'));
+            keys.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.replace('template_', '');
+                select.appendChild(option);
+            });
+        }
+
+        document.getElementById('saveTemplateBtn').addEventListener('click', () => {
+            const name = prompt('Template name?');
+            if (name) {
+                const code = document.getElementById('code').value;
+                localStorage.setItem('template_' + name, code);
+                updateTemplateList();
+            }
+        });
+
+        document.getElementById('loadTemplateBtn').addEventListener('click', () => {
+            const select = document.getElementById('templates');
+            const key = select.value;
+            if (key) {
+                const code = localStorage.getItem(key);
+                document.getElementById('code').value = code;
+                renderGraph();
+            }
+        });
+
+        updateTemplateList();
+
+        // Download image
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const svg = document.querySelector('#graphContainer svg');
+            if (!svg) return;
+            const xml = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([xml], {type: 'image/svg+xml'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'graph.svg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
