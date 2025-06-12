@@ -63,11 +63,13 @@
 
         // Render the diagram from the textarea into the container
         async function renderGraph() {
+
             const code = document.getElementById('code').value;
             const container = document.getElementById('graphContainer');
             const errorBox = document.getElementById('error');
             errorBox.textContent = '';
             container.innerHTML = '';
+
 
             try {
                 const { svg } = await mermaid.render('mermaidGraph', code);
