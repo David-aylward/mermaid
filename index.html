@@ -6,30 +6,73 @@
     <title>Mermaid Graph Editor</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        textarea { width: 100%; height: 200px; }
-        #graphContainer { border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 240px;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        #graphContainer {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 120px;
+            overflow: auto;
+        }
+        #error {
+            color: #b30000;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+<div class="container">
     <h1>Mermaid Graph Editor</h1>
-    <textarea id="code" placeholder="Enter mermaid code here"></textarea>
-    <div>
+    <textarea id="code" placeholder="Enter mermaid code here">graph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[Do this]\n    B -->|No| D[Do that]</textarea>
+    <div class="controls">
         <button id="renderBtn">Render</button>
         <button id="downloadBtn">Download Image</button>
         <button id="saveTemplateBtn">Save Template</button>
         <select id="templates"></select>
         <button id="loadTemplateBtn">Load Template</button>
     </div>
+    <div id="error"></div>
     <div id="graphContainer"></div>
+</div>
     <script>
         mermaid.initialize({startOnLoad:false});
 
         function renderGraph() {
             const code = document.getElementById('code').value;
             const container = document.getElementById('graphContainer');
-            container.innerHTML = `<div class="mermaid">${code}</div>`;
-            mermaid.init(undefined, container);
+            const errorBox = document.getElementById('error');
+            errorBox.textContent = '';
+            container.innerHTML = '';
+            try {
+                mermaid.parse(code);
+                container.innerHTML = `<div class="mermaid">${code}</div>`;
+                mermaid.init(undefined, container);
+            } catch (err) {
+                errorBox.textContent = 'Mermaid error: ' + err.message;
+            }
         }
 
         document.getElementById('renderBtn').addEventListener('click', renderGraph);
