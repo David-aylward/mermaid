@@ -114,7 +114,28 @@ graph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[Do this]\n    B -->|No|
       <div id="graphContainer"></div>
     </div>
     <script>
-      mermaid.initialize({ startOnLoad: false });
+
+        // Configure Mermaid without automatically parsing diagrams on page load
+        mermaid.initialize({ startOnLoad: false });
+
+        // Render the diagram from the textarea into the container
+        async function renderGraph() {
+
+            const code = document.getElementById('code').value;
+            const container = document.getElementById('graphContainer');
+            const errorBox = document.getElementById('error');
+            errorBox.textContent = '';
+            container.innerHTML = '';
+
+
+            try {
+                const { svg } = await mermaid.render('mermaidGraph', code);
+                container.innerHTML = svg;
+            } catch (err) {
+                errorBox.textContent = 'Mermaid error: ' + (err.str || err.message);
+            }
+        }
+
 
       function renderGraph() {
         const code = document.getElementById("code").value;
