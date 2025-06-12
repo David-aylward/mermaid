@@ -24,3 +24,15 @@ python3 -m http.server 8000
 ```
 
 Then visit `http://localhost:8000` in your browser.
+
+## AI Generation with Ollama
+
+To create diagrams from natural language prompts, install [Ollama](https://github.com/jmorganca/ollama) and start its API server:
+
+```bash
+ollama serve
+```
+
+With the server running, use the **AI Generate** button in the editor. The text field labeled **Ollama API URL** lets you specify the API endpoint (default `http://localhost:11434`).
+The list of models is fetched automatically from the server and shown in a drop-down so you can pick which one to use for generation.
+Enter a prompt describing your diagram and the selected model will return Mermaid code that is placed in the editor automatically.
